@@ -1,5 +1,5 @@
 import random
-
+random.seed(3)
 
 
 
@@ -92,9 +92,9 @@ full_map = '''
 ~~~~~~~~~~~~~~~~/~~~^1rrrrr~~..../....~",",,,,,~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~~^^^.."r"~~.2./....~,,,,^,",~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~~ssss~sss~~~~/~~~~~~~~~~sss~~~/~~~~~~~~~~~~~~~~/
 ~  ~~~~~~~~~~~~~/~~~.3^^."rr"~.../~~~~~."..^1..~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~sssss~ssss~~~/sss~~~~sssssss~~/~~~~~~~~~~~~~~~~/
-~~ ~~~~~~~~~~~~~/~~~..^..."r.~.../~,,",,,,,^^^,~~~/~~~~~~~~~~~~~~~~/~~~~~~VVV~~~~~~~/~~eeeeee~~~;;;;;/;;;;rrr;;;eee;~~/~~~~~~~~~~~~~~~~/
-~ ~~~~~~~~~~~~~~/~~^^^^."""r"~~~~/~",2,"^^,,,^3~~~/~~~~~~~~~~~~~~~~/~~~~VVV_VV~~~~~~/~~e?e;?e~~~;ee?e/eeeerereeeee;;~~/~~~~~~~~~~~~~~~~/
-~ ~~~~~~~~~~~~~~/~~........r""."./~~",,,4^,"",^~~~/~~~~~~~~~~~~~~~~/~~~~V____VV~~~~~/~~eee;;eee~;;;e;/;;e;rrr;;;ee;~~~/~~~~~~~~~~~~~~~~/
+~~ ~~~~~~~~~~~~~/~~~..^..."r.~.../~,,",,,,,^^^,~~~/~~~~~~~~~~~~~~~~/~~~~~~VVV~~~~~~~/~~eeeeee~~~;;;;;/;;;;;;;;;;eee;~~/~~~~~~~~~~~~~~~~/
+~ ~~~~~~~~~~~~~~/~~^^^^."""r"~~~~/~",2,"^^,,,^3~~~/~~~~~~~~~~~~~~~~/~~~~VVV_VV~~~~~~/~~e?e;?e~~~;ee?e/eeeeeeeeeeee;;~~/~~~~~~~~~~~~~~~~/
+~ ~~~~~~~~~~~~~~/~~........r""."./~~",,,4^,"",^~~~/~~~~~~~~~~~~~~~~/~~~~V____VV~~~~~/~~eee;;eee~;;;e;/;;e;;;;;;;ee;~~~/~~~~~~~~~~~~~~~~/
 ~  ~~~~~~~~~~~~~/~~.       rrr.../"~~,,,,^,,",^^~~/~~~~~~~~~~~~~~~~/~~VVVVV___V~~~~~/~~~eeeeeee~^;;ee/eee;;;;;eeee;~~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~. ..      r""./.~~~~~~^^,",,^~~/~~~~~~~~~~~~VV~~/~VV_____VVVV~~~~/~~~eeeee?e~^^;;;/ee;;^^^;ee;;;~~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~. 4.  ..  r5"./.~~~~~~~^,"",^~~/~~~~~~~~~~VVVVVV/VV___VV____V~~~~/~~~~~~~ee~~~^^^;/;e;^^;;;;;;~~~~~/~~~~~~~~~~~~~~~~/
@@ -117,8 +117,8 @@ full_map = '''
 ~~~~~~~~~~~~~~~~/~~~"..."rrr"""""/...2~~~^^3^^^^~~/~~~VV___V___VV~~/~~VV_VVV__V~~~~~/~~;eee~eeee;^^;;/eeee~eeeeeee;~~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~~"""3"r"""."."/4...~~^^,,,^^,~~/~~~~VVV___VVV~~~/~~~V_____VV~~~~~/~~;eeeeee~e;^;;e/eeee~e?e;?ee;~~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~~"4"""r"..5"."/F~~~~^^,,^,,,,~~/~~~~~~VVV_V~~~~~/~~~VV_VVVV~~~~~~/~~;e~~ee~?~;;eee/ee?;~eee;;ee;;~~/~~~~~~~~~~~~~~~~/
-~~~~~~~~~~~~~~~~/~~~"..."r"""""../F~^^^^,,,^,,,,~~/~~~~~~~~VVV~~~~~/~~~~VVV~~~~~~~~~/~~;;;~~ee~eeeeee/ee;~~eeeeeeee;~~/~~~~~~~~~~~~~~~~/
-~~~~~~~~~~~~~~~~/~~~""...rr".""""/F~^,,,,,,,,,,,~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~;~~eee~eeeeee/;;;~~~;;eeeee;~~/~~~~~~~~~~~~~~~~/
+~~~~~~~~~~~~~~~~/~~~"..."r"""""../F~^^^^,,,^,,,,~~/~~~~~~~~VVV~~~~~/~~~~VVV~~~~~~~~~/~~;;;~~ee~egggee/ee;~~eeeeeeee;~~/~~~~~~~~~~~~~~~~/
+~~~~~~~~~~~~~~~~/~~~""...rr".""""/F~^,,,,,,,,,,,~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~;~~eee~egggee/;;;~~~;;eeeee;~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~~~"""""r"..6"~/~~^,,,,^^5^^,,~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~;;;ee~~eee;;;/;~~~~~~;;;;;;;~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~~~"7"."r"".."~/^^^,^,,,,,,,,~~~/~~~~~~~~~~~~~~~d/~~~~~~~~~~~~~~~~/~~~~~;eeeeee~~~~/~~~~~~~~~~~;;;~~/~~~~~~~~~~~~~~~~/
 ~~~~~~~~~~~~~~~~/~~~~"..."rr""""~/^,,,^,,,,^,,,~~~/~~~~~~~~~~~~~~dd/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/~~~~~~~~~~~~~~~~/
@@ -504,6 +504,22 @@ E - dirty thick pine forest
 
 
 '''
+class MapChar(object):
+    chars = ',,'
+    def get_z(self, tx=0,ty=0):
+        return 0
+    def get_tile(self):
+        return 1
+    def add_sprites(self):
+        pass
+    def should_fix_borders(self):
+        return False
+
+class GrassChar(MapChar):
+    chars = '.'
+
+
+
 def char_to_tile(c):
     if c in ',^V':
         return 1
@@ -599,6 +615,92 @@ def random_forest_tree():
 def random_swamp_tree():
     return 'tree' + str(random.randint(60,66))
 
+
+def random_swamp_tree3(setno=0):
+    swamp_sets = ['60 61 62 60 61 62 06'.split(),
+                  '63 64 65 63 64 65 30'.split(),
+                  '66 61 65 66 61 65 24'.split(),
+                  '60 61 62 63 64 65 66'.split()]
+
+
+    swamp = '''
+      CNW |  NW  |    NE    | CNE
+    ---------------------------------
+      WN  |  SNW |    SNE   |  EN
+    ---------------------------------
+      WS  |  SSW |    SSE   |  ES
+    ---------------------------------
+     CSW  |  SW  |    SE    |  CSE
+
+          |  34  |    36    |
+    ---------------------------------
+      37  |  60  |    61    |  11
+    ---------------------------------
+      38  |  64  |    62    |  17
+    ---------------------------------
+          |  42  |    22    |
+
+
+    '''
+
+    pines=    'tree31 tree32 tree34 tree35'
+    dead_thin='tree12 tree18 tree21 tree27'
+    southern= 'bush07 bush08 bush12 bush14'
+    not_used= 'tree42 tree42'
+
+    swamp_town=          'tree65 tree65 tree63'
+    swamp_evermoors=     'tree62 tree62 tree61'
+    swamp_shadowmire=    'tree66 tree66 tree60'
+    swamp_minotaur_marsh='tree61 tree61 tree64'
+    
+    swamp_sets = [
+        swamp_town.split(), # SNW
+        swamp_shadowmire.split(), # SNE
+        pines.split(), # EN
+        dead_thin.split(), # WN
+
+        swamp_evermoors.split(), #  SSW
+        swamp_minotaur_marsh.split(), #  SSE
+        southern.split(), #  ES
+        dead_thin.split(), #  WS
+
+        southern.split(), # SW
+        southern.split(), # SE
+        not_used.split(), # CSE
+        not_used.split(), # CSW
+
+        pines.split(), # NW
+        pines.split(), # NE
+        not_used.split(), # CNE
+        not_used.split(), # CNW
+    ]
+    
+    debug_swamp_sets = [
+        'tree60 tree60'.split(), # thin swamp
+        'tree61 tree61'.split(), # thick swamp
+        'tree11 tree11'.split(), # thin red
+        'tree37 tree37'.split(), # no apples
+
+        'tree64 tree64'.split(), # thin swamp
+        'tree62 tree62'.split(), # green swamp
+        'tree17 tree17'.split(), # yellow
+        'tree38 tree38'.split(), # apple
+
+        'tree42 tree42'.split(), # large dead
+        'tree22 tree22'.split(), # P-shaped
+        'tree69 tree69'.split(), # large alive
+        'tree26 tree26'.split(), # orange
+
+        'tree34 tree34'.split(), # green pine
+        'tree36 tree36'.split(), # snow pine
+        'tree30 tree30'.split(), # dead tree
+        'tree21 tree21'.split(), # dead S-shape
+    ]
+    assert 0 <= setno < 16
+    selected_set=swamp_sets[setno]
+    return str(random.choice(selected_set))
+
+
 def random_pine():
     return 'tree' + random.choice('31 32 34 35')
 
@@ -671,10 +773,19 @@ def add_swamp_trees(tx,ty):
         (+1536, -512),
         (+1536, -1536),
         ]
+
+    def rand_t():
+        #z = random.choice([-15,-11,-7,-5,-3,-2,-1,0,1,2,3,5,7,11,15])
+        z = random.choice([-20,-15,-11,-7,-5,-3,-2,2,3,5,7,11,15,20])
+        return random.choice([(0, z), (z, 0)])
+    
+    #print(tx,ty,setno)
     for dx, dy in displacements:
+        rx, ry = rand_t()
+        setno=(tx-19+rx)//3//16 % 4 + (ty-19+ry)//3//16 % 4 * 4
         ssx = (tx - 64) * 65536 // 128 + dx + random.randint(-400, 400)
         ssy = (ty - 64) * -65536 // 128 + dy + random.randint(-400, 400)
-        add_tree(ssx,ssy,random_swamp_tree(),random.randint(-100,0))
+        add_tree(ssx,ssy,random_swamp_tree3(setno),random.randint(-100,0))
 
 def add_tall_grass(tx,ty):
     displacements= [
@@ -750,24 +861,27 @@ def fullmap2cmd(sx,sy):
                     elif ch == '"':
                         add_forest(tx,ty)
                     
-                
+    # fix borders for high tiles
     #[',.r1234567890T?sS', '^";:fF']
     for sets in ['^"fFeE']:
-        for tx in range(1, 127):
-            for ty in range(1,127):
-                cx = sx + (tx+1)//SC
-                cy = sy + (ty+1)//SC
-                ch = prepared_map[cy][cx]
+        for dx,dy in [(0,1), (1,0), (1,1)]:
+            for tx in range(1, 127):
+                for ty in range(1,127):
+                    cx = sx + (tx+dx)//SC
+                    cy = sy + (ty+dy)//SC
+                    ch = prepared_map[cy][cx]
 
-                # refill textures for hills tiles
-                cc=char_to_tile(ch)
-                if ch in sets:
-                    tile_map[ty][tx]=cc
-                if not (start_tile <= tx <= 127 - start_tile) or not (
-                        start_tile <= ty <= 127 - start_tile):
-                    if (tx //SC % 2 ==  ty // SC % 2):
-                        tile_map[ty][tx]=173
-        
+                    # refill textures for hills tiles
+                    cc=char_to_tile(ch)
+                    if ch in sets:
+                        tile_map[ty][tx]=cc
+                    if not (start_tile <= tx <= 127 - start_tile) or not (
+                            start_tile <= ty <= 127 - start_tile):
+                        if (tx //SC % 2 ==  ty // SC % 2):
+                            tile_map[ty][tx]=173
+    while len(trees) < 964:
+        add_tree(0,0,'bush01',100)
+
     s='\n\nEditor.ExclusiveUndoState();'
     s+='hm={}; tm={};'
     for ty in range(0, 127):
