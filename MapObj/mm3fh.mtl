@@ -1,0 +1,33 @@
+# Model MTL from "mm3fh.dat" map from MM7.
+	
+newmtl cfb1
+	map_Ka mm3fh.textures/Cfb1.bmp
+	map_Kd mm3fh.textures/Cfb1.bmp
+	
+newmtl t2bs
+	map_Ka mm3fh.textures/T2BS.bmp
+	map_Kd mm3fh.textures/T2BS.bmp
+	
+newmtl sky16
+	map_Ka mm3fh.textures/SKY16.bmp
+	map_Kd mm3fh.textures/SKY16.bmp
+	
+newmtl t1books2
+	map_Ka mm3fh.textures/T1books2.bmp
+	map_Kd mm3fh.textures/T1books2.bmp
+	
+newmtl hdm1d
+	map_Ka mm3fh.textures/Hdm1d.bmp
+	map_Kd mm3fh.textures/Hdm1d.bmp
+	
+newmtl hem1bw
+	map_Ka mm3fh.textures/HEM1BW.bmp
+	map_Kd mm3fh.textures/HEM1BW.bmp
+	
+newmtl hwr1wall
+	map_Ka mm3fh.textures/HWR1WALL.bmp
+	map_Kd mm3fh.textures/HWR1WALL.bmp
+	
+newmtl hwm2rf
+	map_Ka mm3fh.textures/HWM2RF.bmp
+	map_Kd mm3fh.textures/HWM2RF.bmp
