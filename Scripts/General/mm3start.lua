@@ -96,11 +96,12 @@ function events.NewGameMap()
 end
 
 function events.DeathMapp(t)
-	t.Name = "wer.odm"
+	t.Name = "mm3fh.blv"
 	XYZ(Party, 0, 0, 0)
 	Party.Direction = 0
 	Party.LookAngle = 0
 end
+
 
 function reverse_side(s) 
     if s == "up" then return "down"; end

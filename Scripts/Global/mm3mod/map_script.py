@@ -643,34 +643,44 @@ def random_swamp_tree3(setno=0):
 
     '''
 
+    bold_trees='tree43 tree44 tree45 tree46'
+    curly_dead_trees='tree41 tree42'
+    dead_trees='tree03 tree06 tree09 tree12 tree15 tree18 tree21 tree24 tree27 tree30'
+    
+
+    rocks='rock01 rock02 rock03 rock04 rock05'
     pines=    'tree31 tree32 tree34 tree35'
+    small_pines='tree32 tree32'
     dead_thin='tree12 tree18 tree21 tree27'
     southern= 'bush07 bush08 bush12 bush14'
     not_used= 'tree42 tree42'
 
-    swamp_town=          'tree65 tree65 tree63'
-    swamp_evermoors=     'tree62 tree62 tree61'
-    swamp_shadowmire=    'tree66 tree66 tree60'
-    swamp_minotaur_marsh='tree61 tree61 tree64'
+    swamp_town=          'tree43 tree44 tree45 tree46 tree41 tree42' #'tree65 tree65 tree63'
+    swamp_evermoors=     'tree18 tree21 tree24 tree27 tree30 tree41 tree42'  #'tree62 tree62 tree61'
+    swamp_shadowmire=    'tree03 tree06 tree09 tree12 tree15 tree43 tree44 tree45 tree46' #'tree66 tree66 tree60'
+    swamp_minotaur_marsh='tree41 tree42 tree41 tree42' #'tree61 tree61 tree64'
+
+    
+
     
     swamp_sets = [
         swamp_town.split(), # SNW
         swamp_shadowmire.split(), # SNE
-        pines.split(), # EN
+        small_pines.split(), # EN
         dead_thin.split(), # WN
 
         swamp_evermoors.split(), #  SSW
         swamp_minotaur_marsh.split(), #  SSE
         southern.split(), #  ES
-        dead_thin.split(), #  WS
+        rocks.split(), #  WS
 
         southern.split(), # SW
         southern.split(), # SE
         not_used.split(), # CSE
         not_used.split(), # CSW
 
-        pines.split(), # NW
-        pines.split(), # NE
+        small_pines.split(), # NW
+        small_pines.split(), # NE
         not_used.split(), # CNE
         not_used.split(), # CNW
     ]
@@ -769,11 +779,17 @@ def add_swamp_trees(tx,ty):
     displacements= [
         (+512, -512),
         (+512, -1536),
-        #(+1024, -1024),
         (+1536, -512),
         (+1536, -1536),
         ]
-
+    displacements= [
+        (+512, -512),
+        (+512, -1024),
+        (+512, -1536),
+        (+1024, -1536),
+        (+1536, -512),
+        (+1536, -1536),
+        ]
     def rand_t():
         #z = random.choice([-15,-11,-7,-5,-3,-2,-1,0,1,2,3,5,7,11,15])
         z = random.choice([-20,-15,-11,-7,-5,-3,-2,2,3,5,7,11,15,20])
@@ -804,7 +820,7 @@ def add_tall_grass(tx,ty):
         ssy = (ty - 64) * -65536 // 128 + dy + random.randint(-100, 100)
         add_tree(ssx,ssy,'bush01')
 
-
+TREE_LIMIT=1600
 def fullmap2cmd(sx,sy):
 
         
@@ -847,7 +863,7 @@ def fullmap2cmd(sx,sy):
                 visited[(cx,cy)] = True
                 ch = prepared_map[cy][cx]
 
-                if len(trees) < 940:
+                if len(trees) < TREE_LIMIT:
                     if ch == 'e':
                         add_swamp_trees(tx,ty)
                     elif ch == 'f':
@@ -879,7 +895,7 @@ def fullmap2cmd(sx,sy):
                             start_tile <= ty <= 127 - start_tile):
                         if (tx //SC % 2 ==  ty // SC % 2):
                             tile_map[ty][tx]=173
-    while len(trees) < 964:
+    while len(trees) < TREE_LIMIT:
         add_tree(0,0,'bush01',100)
 
     s='\n\nEditor.ExclusiveUndoState();'
