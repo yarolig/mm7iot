@@ -46,13 +46,10 @@ Keys[const.Keys.K] = function()
     elseif Party.Direction==1536 then -- S
         dx = 0; dy = -1
     end
-    local distance = 1000
+    local distance = 1024
     Party.X = Party.X + distance*dx
     Party.Y = Party.Y + distance*dy
-
 end
-
-
 
 local function learn_skill(pl, skill, new_points, new_mastery)
     local skill, mastery = SplitSkill(pl.Skills[skill])
@@ -172,6 +169,38 @@ function events.WalkToMap(t)
         t.EnterMap = "mm3a2.odm";
     end
 end
+
+
+function events.UseMouseItem(t)
+	-- 113 click new game
+	-- 78 - hover set spell
+	
+	--if t.Action == 79  or t.Action == 94 or t.Action == 78 then
+		--return
+	--end
+	MessageBox("UseMouseItem "..dump(t))
+end
+
+-- special spell
+Keys[const.Keys.P] = function() 
+	local ans = Question([[Select special spell
+J Jump (2SP)
+T Teleport (10SP)
+P Town Portal (30SP)
+N Nature's Portal (40SP)
+E Etheralize (20SP)
+R Create Rope (2SP)
+S Suppress poison (15SP)
+U Suppress disease (15SP)
+F Create Food (15SP)
+]], "?")
+	if ans == 'j' or ans == 'J' then
+		local x=12
+	end
+
+    -- Party.Direction = ((Party.Direction+256):div(512)*512 - 512 + 2048) % 2048
+end
+
 
 --[[
     Hi everyone!
